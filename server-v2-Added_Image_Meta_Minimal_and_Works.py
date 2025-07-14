@@ -67,11 +67,7 @@ async def serve() -> None:
             ),
             Tool(
                 name="image-meta",
-                description=(
-                            "Get image metadata from a public image URL. "
-                            "Returns width, height, file size in bytes, image mode (e.g., RGB), "
-                            "and image format (e.g., PNG, JPEG)."
-                            ),
+                description="Get the width, height, and file size (in bytes) of an image URL.",
                 inputSchema={
                     "type": "object",
                     "properties": {
@@ -107,7 +103,6 @@ async def serve() -> None:
             except Exception as e:
                 return [TextContent(type="text", text=f"Error processing image: {str(e)}")]
 
-
         elif name == "image-meta":
             image_url = arguments["image_url"]
 
@@ -119,22 +114,12 @@ async def serve() -> None:
                 img = Image.open(BytesIO(response.content))
                 width, height = img.size
                 img_size = len(response.content)
-                mode = img.mode
-                fmt = img.format
-
                 return [TextContent(
                     type="text",
-                    text=(
-                        f"Image Width: {width}px\n"
-                        f"Image Height: {height}px\n"
-                        f"Image Size: {img_size} bytes\n"
-                        f"Image Mode: {mode}\n"
-                        f"Image Format: {fmt}"
-                    )
+                    text=f"Image Width: {width}px, Height: {height}px, Size: {img_size} bytes"
                 )]
             except Exception as e:
                 return [TextContent(type="text", text=f"Failed to process image: {e}")]
-
 
         elif name == "add-two-numbers":
             try:
